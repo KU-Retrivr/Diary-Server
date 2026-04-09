@@ -1,25 +1,17 @@
-package com.example.diary.model;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+package com.example.diary.dto;
 
 import java.time.LocalDate;
 
-@Entity
-public class Diary {
+public class DiaryResponseDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String content;
     private LocalDate date;
 
-    public Diary() {
+    public DiaryResponseDto() {
     }
 
-    public Diary(Long id, String content, LocalDate date) {
+    public DiaryResponseDto(Long id, String content, LocalDate date) {
         this.id = id;
         this.content = content;
         this.date = date;

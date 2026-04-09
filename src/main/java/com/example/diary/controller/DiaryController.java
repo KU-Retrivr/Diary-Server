@@ -1,6 +1,9 @@
 package com.example.diary.controller;
 
-import com.example.diary.model.Diary;
+import com.example.diary.dto.DiaryRequestDto;
+import com.example.diary.dto.DiaryResponseDto;
+import com.example.diary.service.DiaryService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,26 +20,25 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class DiaryController {
 
-    private final List<Diary> diaries = new ArrayList<>();
-    private Long nextId = 1L;
+    private final DiaryService diaryService;
+
+    public DiaryController(DiaryService diaryService) {
+        this.diaryService = diaryService;
+    }
 
     @GetMapping
-    public List<Diary> getAllDiaries() {
-        return diaries;
+    public List<DiaryResponseDto> getAllDiaries() {
+        return diaryService.getAllDiaries();
     }
 
     @PostMapping
-    public Diary createDiary(@RequestBody Diary diary) {
-        Diary newDiary = new Diary(nextId++, diary.getContent(), diary.getDate());
-        diaries.add(newDiary);
-        return newDiary;
+    public DiaryResponseDto createDiary(@Valid @RequestBody DiaryRequestDto diaryRequestDto) {
+        return diaryService.createDiary(diaryRequestDto);
     }
 
     @DeleteMapping("/{id}")
     public String deleteDiary(@PathVariable Long id) {
-        boolean removed = diaries.removeIf(diary -> diary.getId().equals(id));
-
-        if (removed) {
+        if (diaryService.deleteDiary(id)) {
             return "Diary deleted successfully.";
         }
 
