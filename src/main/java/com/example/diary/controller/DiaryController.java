@@ -28,7 +28,7 @@ public class DiaryController {
 
     @PostMapping
     public Diary createDiary(@RequestBody Diary diary) {
-        Diary newDiary = new Diary(nextId++, diary.getContent());
+        Diary newDiary = new Diary(nextId++, diary.getContent(), diary.getDate());
         diaries.add(newDiary);
         return newDiary;
     }
